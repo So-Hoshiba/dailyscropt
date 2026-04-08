@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DailyScript — 1日10分英語</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Soft */
+  --s-bg:#FDF6F0;
+  --s-card:#FFFFFF;
+  --s-border:#F0E4D8;
+  --s-accent:#D4845A;
+  --s-text:#2C1A0E;
+  --s-muted:#9C7B6A;
+  --s-tag-bg:#FBF0E8;
+  --s-tag:#C4724A;
+  --s-dot-empty:#F0E4D8;
+  --s-alt:#9EA88C;
+
+  /* Sharp — grey base */
+  --h-bg:#C8C8C4;
+  --h-card:#D8D8D4;
+  --h-border:#B0B0AC;
+  --h-accent:#3D6B8E;
+  --h-text:#0A0A0A;
+  --h-muted:#3A3A38;
+  --h-tag-bg:#C0C8D0;
+  --h-tag:#1A3A50;
+  --h-dot-empty:#B0B0AC;
+  --h-alt:#4A7D60;
+
+  --r:16px;--rs:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;min-height:100vh;transition:background .3s;}
+
+/* ── Theme bar ── */
+.tbar{
+  position:fixed;top:14px;right:14px;z-index:100;
+  display:flex;gap:4px;padding:4px;border-radius:22px;
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);
+  border:0.5px solid rgba(0,0,0,0.08);box-shadow:0 2px 14px rgba(0,0,0,0.07);
+}
+.tbtn{
+  padding:5px 16px;border-radius:18px;font-size:12px;font-weight:500;
+  cursor:pointer;border:none;background:transparent;color:#aaa;
+  transition:all .2s;font-family:'DM Sans',sans-serif;
+}
+.soft .tbtn.a-soft{background:var(--s-accent);color:white;}
+.sharp .tbtn.a-sharp{background:var(--h-accent);color:white;}
+
+/* ── Shared layout ── */
+.shell{max-width:430px;margin:0 auto;padding:20px 16px 80px;}
+
+.hd{text-align:center;padding:38px 0 22px;}
+.logo{font-family:'Playfair Display',serif;font-size:30px;letter-spacing:-.5px;}
+.sub{font-size:12px;letter-spacing:1.5px;margin-top:5px;}
+
+.streak{
+  border-radius:var(--r);padding:16px 20px;margin-bottom:14px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.snum{font-family:'Playfair Display',serif;font-size:38px;line-height:1;}
+.slabel{font-size:11px;margin-top:3px;}
+.sdots{display:flex;gap:5px;}
+.sd{width:9px;height:9px;border-radius:50%;}
+
+.daybadge{
+  display:inline-flex;align-items:center;gap:6px;
+  border-radius:20px;padding:6px 14px;font-size:12px;margin-bottom:14px;
+}
+.daybadge span{font-weight:500;}
+
+.card{border-radius:var(--r);overflow:hidden;margin-bottom:14px;}
+.card-top{padding:22px 22px 18px;}
+.cat-pill{
+  display:inline-block;font-size:10px;letter-spacing:2px;font-weight:500;
+  border-radius:20px;padding:4px 12px;margin-bottom:14px;
+}
+.en-text{font-family:'Playfair Display',serif;font-size:17px;line-height:1.9;}
+.author{font-size:11px;margin-top:10px;font-style:italic;}
+
+.jp-section{padding:16px 22px;}
+.jp-label{font-size:10px;letter-spacing:2px;font-weight:500;margin-bottom:8px;}
+.jp-text{font-size:13px;line-height:1.85;border-radius:var(--rs);padding:12px 14px;}
+
+.key-section{padding:16px 22px;}
+.key-label{font-size:10px;letter-spacing:2px;font-weight:500;margin-bottom:12px;}
+.kitem{margin-bottom:12px;padding:14px 16px;border-radius:var(--rs);}
+.kitem:last-child{margin-bottom:0;}
+.ktype{font-size:10px;letter-spacing:1.5px;font-weight:500;margin-bottom:5px;}
+.kphrase{font-size:14px;font-weight:500;margin-bottom:4px;}
+.kdesc{font-size:12px;line-height:1.65;}
+.kalt{font-size:11px;margin-top:6px;font-style:italic;}
+
+.done-btn{
+  width:100%;padding:16px;color:white;border:none;
+  border-radius:var(--rs);font-size:15px;font-weight:500;
+  cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;
+  margin-top:4px;letter-spacing:.3px;
+}
+.done-btn.done{background:#6BAE8A !important;pointer-events:none;}
+
+/* ── Soft colors ── */
+body.soft{background:var(--s-bg);
+  background-image:radial-gradient(ellipse at 10% 10%,rgba(212,132,90,.1) 0%,transparent 55%),
+                   radial-gradient(ellipse at 90% 90%,rgba(184,196,160,.08) 0%,transparent 50%);}
+body.soft .logo{color:var(--s-accent);}
+body.soft .sub{color:var(--s-muted);}
+body.soft .streak{background:var(--s-card);border:1px solid var(--s-border);}
+body.soft .snum{color:var(--s-accent);}
+body.soft .slabel{color:var(--s-muted);}
+body.soft .sd{background:var(--s-dot-empty);}
+body.soft .sd.on{background:var(--s-accent);}
+body.soft .sd.td{background:white;border:2px solid var(--s-accent);}
+body.soft .daybadge{background:var(--s-card);border:1px solid var(--s-border);color:var(--s-muted);}
+body.soft .daybadge span{color:var(--s-accent);}
+body.soft .card{background:var(--s-card);border:1px solid var(--s-border);}
+body.soft .card-top{border-bottom:1px solid var(--s-border);}
+body.soft .cat-pill{color:var(--s-tag);background:var(--s-tag-bg);}
+body.soft .en-text{color:var(--s-text);}
+body.soft .en-text .hl{color:var(--s-accent);}
+body.soft .author{color:var(--s-muted);}
+body.soft .jp-section{border-top:1px solid var(--s-border);}
+body.soft .jp-label{color:var(--s-muted);}
+body.soft .jp-text{background:var(--s-bg);color:var(--s-muted);}
+body.soft .key-section{border-top:1px solid var(--s-border);}
+body.soft .key-label{color:var(--s-muted);}
+body.soft .kitem{background:var(--s-bg);border:1px solid var(--s-border);}
+body.soft .ktype{color:var(--s-muted);}
+body.soft .kphrase{color:var(--s-text);}
+body.soft .kdesc{color:var(--s-muted);}
+body.soft .kalt{color:var(--s-alt);}
+body.soft .done-btn{background:var(--s-accent);}
+body.soft .done-btn:hover:not(.done){background:#BF6E44;}
+
+/* ── Sharp colors ── */
+body.sharp{background:var(--h-bg);}
+body.sharp .logo{color:var(--h-accent);}
+body.sharp .sub{color:var(--h-muted);}
+body.sharp .streak{background:var(--h-card);border:1px solid var(--h-border);}
+body.sharp .snum{color:var(--h-accent);}
+body.sharp .slabel{color:var(--h-muted);}
+body.sharp .sd{background:var(--h-dot-empty);}
+body.sharp .sd.on{background:var(--h-accent);}
+body.sharp .sd.td{background:white;border:2px solid var(--h-accent);}
+body.sharp .daybadge{background:var(--h-card);border:1px solid var(--h-border);color:var(--h-muted);}
+body.sharp .daybadge span{color:var(--h-accent);}
+body.sharp .card{background:var(--h-card);border:1px solid var(--h-border);}
+body.sharp .card-top{border-bottom:1px solid var(--h-border);}
+body.sharp .cat-pill{color:var(--h-tag);background:var(--h-tag-bg);}
+body.sharp .en-text{color:var(--h-text);}
+body.sharp .en-text .hl{color:var(--h-accent);}
+body.sharp .author{color:var(--h-muted);}
+body.sharp .jp-section{border-top:1px solid var(--h-border);}
+body.sharp .jp-label{color:var(--h-muted);}
+body.sharp .jp-text{background:var(--h-bg);color:var(--h-text);}
+body.sharp .key-section{border-top:1px solid var(--h-border);}
+body.sharp .key-label{color:var(--h-muted);}
+body.sharp .kitem{background:var(--h-bg);border:1px solid var(--h-border);}
+body.sharp .ktype{color:var(--h-muted);}
+body.sharp .kphrase{color:var(--h-text);}
+body.sharp .kdesc{color:var(--h-text);}
+body.sharp .kalt{color:var(--h-alt);}
+body.sharp .done-btn{background:var(--h-accent);}
+body.sharp .done-btn:hover:not(.done){background:#2D5A7A;}
+
+/* Loading */
+.loading{text-align:center;padding:44px 20px;}
+body.soft .loading{color:var(--s-muted);}
+body.sharp .loading{color:var(--h-muted);}
+.ldot{display:inline-block;width:7px;height:7px;border-radius:50%;margin:0 3px;animation:ld 1.2s infinite;}
+body.soft .ldot{background:var(--s-border);}
+body.sharp .ldot{background:var(--h-border);}
+.ldot:nth-child(2){animation-delay:.2s;}.ldot:nth-child(3){animation-delay:.4s;}
+@keyframes ld{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-7px)}}
+.err{text-align:center;padding:32px 20px;font-size:13px;}
+body.soft .err{color:var(--s-muted);}
+body.sharp .err{color:var(--h-muted);}
+.retry-btn{margin-top:12px;padding:8px 22px;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;border:1px solid;background:transparent;}
+body.soft .retry-btn{border-color:var(--s-border);color:var(--s-muted);}
+body.sharp .retry-btn{border-color:var(--h-border);color:var(--h-muted);}
+</style>
+</head>
+<body class="soft">
+
+<div class="tbar">
+  <button class="tbtn a-soft" id="bf" onclick="setTheme('soft')">Soft</button>
+  <button class="tbtn" id="bh" onclick="setTheme('sharp')">Sharp</button>
+</div>
+
+<div class="shell">
+  <div class="hd">
+    <div class="logo">DailyScript</div>
+    <div class="sub">1日10分 · 英語リーディング</div>
+  </div>
+
+  <div class="streak">
+    <div>
+      <div class="snum">23</div>
+      <div class="slabel">日連続継続中</div>
+    </div>
+    <div>
+      <div class="sdots" id="sdots"></div>
+      <div style="font-size:11px;margin-top:6px;opacity:.45;text-align:right">今週</div>
+    </div>
+  </div>
+
+  <div class="daybadge">今日のテーマ：<span id="theme-label">読み込み中...</span></div>
+
+  <div class="card" id="main-card">
+    <div class="loading">
+      <div style="margin-bottom:14px">コンテンツを生成中...</div>
+      <div class="ldot"></div><div class="ldot"></div><div class="ldot"></div>
+    </div>
+  </div>
+
+  <button class="done-btn" id="done-btn" onclick="onDone()">今日も完了！ ✓</button>
+</div>
+
+<script>
+const CATS=[
+  {id:'motivation',label:'自己啓発',en:'MOTIVATION'},
+  {id:'philosophy',label:'哲学',en:'PHILOSOPHY'},
+  {id:'business',label:'ビジネス',en:'BUSINESS'},
+  {id:'literature',label:'文学・詩',en:'LITERATURE'},
+  {id:'science',label:'科学・自然',en:'SCIENCE'},
+  {id:'history',label:'歴史・偉人',en:'HISTORY'},
+];
+
+let theme='soft';
+const todayCat=CATS[new Date().getDate()%CATS.length];
+
+function setTheme(t){
+  theme=t;
+  document.body.className=t;
+  document.getElementById('bf').className='tbtn'+(t==='soft'?' a-soft':'');
+  document.getElementById('bh').className='tbtn'+(t==='sharp'?' a-sharp':'');
+  const btn=document.getElementById('done-btn');
+  if(!btn.classList.contains('done'))
+    btn.textContent='今日も完了！ ✓';
+  renderDots();
+}
+
+function renderDots(){
+  const days=[true,true,true,true,true,'td',false];
+  document.getElementById('sdots').innerHTML=days.map(d=>
+    `<div class="sd${d===true?' on':d==='td'?' td':''}"></div>`).join('');
+}
+
+async function loadContent(){
+  const card=document.getElementById('main-card');
+  document.getElementById('theme-label').textContent=todayCat.label;
+  card.innerHTML=`<div class="loading"><div style="margin-bottom:14px">コンテンツを生成中...</div><div class="ldot"></div><div class="ldot"></div><div class="ldot"></div></div>`;
+
+  const prompt=`You are an English learning content creator for Japanese beginners (CEFR A2, junior-high school level).
+
+Generate ONE inspiring short English passage (3–5 sentences, max 75 words) in category: ${todayCat.en} (${todayCat.label}).
+
+Rules:
+- Simple A2 vocabulary and grammar
+- Meaningful, thought-provoking content
+- Mark 2–3 key phrases using **asterisks**
+
+Provide exactly 3 key expression items:
+1. VOCABULARY — one important word or idiom
+2. GRAMMAR — one grammar point (explain WHY it works, in Japanese)
+3. VARIATION — an alternative phrasing (more natural/casual)
+
+Respond ONLY in this exact JSON (no markdown, no extra text):
+{
+  "english": "Passage with **key phrases** marked.",
+  "japanese": "日本語訳",
+  "author": "Person or source, or empty string",
+  "keys": [
+    {"type":"VOCABULARY","phrase":"word or idiom","desc":"日本語で解説","alt":""},
+    {"type":"GRAMMAR","phrase":"grammar structure","desc":"日本語で解説","alt":""},
+    {"type":"VARIATION","phrase":"original phrase","desc":"日本語で解説","alt":"別の言い方"}
+  ]
+}`;
+
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:"claude-sonnet-4-20250514",
+        max_tokens:1000,
+        messages:[{role:"user",content:prompt}]
+      })
+    });
+    const data=await res.json();
+    const raw=data.content.map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
+    renderCard(JSON.parse(raw));
+  }catch(e){
+    card.innerHTML=`<div class="err">生成に失敗しました<br><button class="retry-btn" onclick="loadContent()">再試行</button></div>`;
+  }
+}
+
+function renderCard(p){
+  const card=document.getElementById('main-card');
+  const enHtml=p.english.replace(/\*\*(.+?)\*\*/g,'<span class="hl">$1</span>');
+  const keysHtml=p.keys.map(k=>`
+    <div class="kitem">
+      <div class="ktype">${k.type}</div>
+      <div class="kphrase">${k.phrase}</div>
+      <div class="kdesc">${k.desc}</div>
+      ${k.alt?`<div class="kalt">${k.alt}</div>`:''}
+    </div>`).join('');
+
+  card.innerHTML=`
+    <div class="card-top">
+      <div class="cat-pill">${todayCat.en}</div>
+      <div class="en-text">${enHtml}</div>
+      ${p.author?`<div class="author">— ${p.author}</div>`:''}
+    </div>
+    <div class="jp-section">
+      <div class="jp-label">日本語訳</div>
+      <div class="jp-text">${p.japanese}</div>
+    </div>
+    <div class="key-section">
+      <div class="key-label">キー表現のポイント</div>
+      ${keysHtml}
+    </div>`;
+}
+
+function onDone(){
+  const btn=document.getElementById('done-btn');
+  btn.classList.add('done');
+  btn.textContent='完璧！また明日 ✓';
+}
+
+renderDots();
+loadContent();
+</script>
+</body>
+</html>
